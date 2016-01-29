@@ -48,6 +48,7 @@ var zoo = function() {
     });
   }
   //???? should the visit function have the argument inputScope?
+  //???? should there be a prompt.get function
   this.visit = function() {
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
     console.log("Enter (N): do you know the animal by it's name? We will visit that animal!");
@@ -86,7 +87,7 @@ var zoo = function() {
   }
   this.type = function(inputScope) {
     var currentScope = inputScope;
-    console.log("Enter animal type to find how many animals we have of those type.");
+    console.log("Enter the animal type to find how many animals we have of those type.");
     prompt.get(["animal_type"], function (err, result) {
     //test for input 
     // console.log("animal_type: " + result.animal_type);
@@ -95,8 +96,106 @@ var zoo = function() {
     currentScope.promptUser();
     });
   }  
-  
+  this.care = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter city name NY/SF.");
+    prompt.get(["city_name"], function (err, result) {
+    //test for input 
+    // console.log("city_name: " + result.city_name);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }
+  this.animId = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter the ID of the animal you want to visit.");
+    prompt.get(["animal_id"], function (err, result) {
+    //test for input 
+    // console.log("animal_id: " + result.animal_id);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }  
+  this.name = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter the name of the animal you want to visit.");
+    prompt.get(["animal_name"], function (err, result) {
+    //test for input 
+    // console.log("animalName: " + result.animalName);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }
+  this.all = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter to find how many animals we have to visit.");
+    prompt.get(["animal_all"], function (err, result) {
+    //test for input 
+    // console.log("animal_all: " + result.animal_all);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }
+  this.update = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter to update an animal.");
+    prompt.get(["id","new_name","new_age","new_type","new_caretaker_id"], function (err, result) {
+    //test for input 
+    // console.log("animal id: " + result.id);
+    // console.log("new_name: " + result.new_name);
+    // console.log("new_age: " + result.new_age);
+    // console.log("new_type: " + result.new_type);
+    // console.log("new_caretaker: " + result.new_caretaker);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }
+  this.adopt = function(inputScope){
+    console.log("Enter the ID of the animal you want to adopt.");
+    prompt.get(["animal_id"], function (err, result) {
+    //test for input 
+    // console.log("animal_id: " + result.animal_id);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }
+  this.promptUser = function() {
+    var self = this;
+    prompt.get(["input"], function (err, result) {
+    //test for input 
+    // console.log("input: " + result.input);
+      if (result.input == "Q") {
+        self.exit();
+      } else if (result.input == "A") {
+        self.add(self);
+      } else if (result.input == "V") {
+        self.visit();
+        self.view(self);
+      } else if (result.input == "D") {
+        self.adopt(self);
+      } else {
+        console.log("Sorry didn't get that, come again?")
+      }
+    });
+  }  
+  this.exit = function() {
+    console.log("Thank you for visiting us, good bye!");
+    process.exit();
+  }
+  this.open = function() {
+    this.welcome();
+    this.menu();
+    this.promptUser();
+  }
 }
+
+//zoo.open()
 
 //these are used to check the functions in zoo
 var zoo1 = new zoo();
