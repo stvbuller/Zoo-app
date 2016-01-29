@@ -1,0 +1,23 @@
+{
+  "name": "zoo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stvbuller/Zoo-app.git"
+  },
+  "author": "steven buller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stvbuller/Zoo-app/issues"
+  },
+  "homepage": "https://github.com/stvbuller/Zoo-app#readme",
+  "dependencies": {
+    "mysql": "^2.10.2",
+    "prompt": "^0.2.14"
+  }
+}
