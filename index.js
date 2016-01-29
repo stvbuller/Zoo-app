@@ -45,8 +45,9 @@ var zoo = function() {
     connection.query();
     currentScope.menu();
     currentScope.promptUser();
-  });
+    });
   }
+  //???? should the visit function have the argument inputScope?
   this.visit = function() {
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
     console.log("Enter (N): do you know the animal by it's name? We will visit that animal!");
@@ -57,6 +58,44 @@ var zoo = function() {
     currentScope.visit();
     currentScope.view(currentScope);
   }
+  //???? should the view function have the argument inputScope?
+  this.view = function(inputScope){
+    var currentScope = inputScope;
+    console.log("Please choose what you would like to visit!");
+    prompt.get(["visit"], function (err, result) {
+    //test for input 
+    //console.log("visit: " + result.visit);
+      if (result.visit == "Q"){
+        currentScope.menu();
+      } else if (result.visit == "O") {
+        currentScope.type(input_scope);
+      } else if (result.visist == "I") {
+        currentScope.type(input_scope);
+      } else if (result.visit == "N") {
+        currentScope.name(input_scope);
+      } else if (result.visit == "A"){
+        currentScope.all(input_scope);
+      } else if (ressult.visit == "C") {
+        currentScope.care(input_scope);
+      } else {
+        console.log("Sorry didn't get that, come again?");
+        currentScope.visit();
+        currentScope.view(currentScope);
+      }
+    });  
+  }
+  this.type = function(inputScope) {
+    var currentScope = inputScope;
+    console.log("Enter animal type to find how many animals we have of those type.");
+    prompt.get(["animal_type"], function (err, result) {
+    //test for input 
+    // console.log("animal_type: " + result.animal_type);
+    connection.query();
+    currentScope.menu();
+    currentScope.promptUser();
+    });
+  }  
+  
 }
 
 //these are used to check the functions in zoo
@@ -64,4 +103,5 @@ var zoo1 = new zoo();
 zoo1.welcome();
 zoo1.menu();
 //zoo1.add();
-zoo1.visit();
+//zoo1.visit();
+zoo1.view();
