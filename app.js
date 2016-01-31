@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
  
 connection.connect();
 
-//app.js is used to test the queries
+//app.js is used to test the queries used in index.js
 
 
 //find caretakers
