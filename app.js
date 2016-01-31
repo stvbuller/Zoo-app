@@ -7,6 +7,10 @@ var connection = mysql.createConnection({
 });
  
 connection.connect();
+
+//app.js is used to test the queries
+
+
 //find caretakers
 // connection.query('SELECT * FROM caretakers', function(err, rows, fields) {
 //   if (err) throw err;
@@ -32,16 +36,14 @@ connection.connect();
 // var age = "34";
 // caretaker_id = 1;
 // connection.query('INSERT INTO animals (name, type, age, caretaker_id) VALUES (?,?,?,?)', [name, type, age, caretaker_id], function(err, rows, fields) {
-//   if (err) throw err;
-  
+//   if (err) throw err; 
 //   console.log('Finished adding the animal');
 // });
 
 //delete an animal from the database
 // var animal_id = 100;
 // connection.query('DELETE FROM animals WHERE id =?', [animal_id], function(err, rows, fields) {
-//   if (err) throw err;
-    
+//   if (err) throw err;    
 //     console.log("The animal is adopted");
 // });
 
@@ -51,7 +53,6 @@ connection.connect();
 // var animal_type = "snake";
 // connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [animal_type], function(err, rows, fields) {
 //   if (err) throw err;
- 
 //     console.log(rows);  //?? still need to drill into rows
 // });
 
@@ -70,7 +71,6 @@ connection.connect();
 //     }  
 // });
 
-
 //counts the number of animals in a city
 // var city_name = "NY";
 // connection.query('SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [city_name], function(err, rows, fields) {
@@ -88,5 +88,7 @@ connection.connect();
 //   if (err) throw err;
 //     console.log("The animal is updated");
 // });
+
 connection.end();
+
 

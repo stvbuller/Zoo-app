@@ -38,16 +38,8 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("To add an animal to the zoo please fill out the following form for us!");
     prompt.get(["name", "type", "age"], function (err, result) {
-    //test for input 
-    // console.log("name: " + result.name);
-    // console.log("type: " + result.type);
-    // console.log("age: " + result.age);
-    //query adds an animal to the database
-      var name = result,name;
-      var type = result.type;
-      var age = result.age;
       var caretaker_id = 1;
-      connection.query('INSERT INTO animals (name, type, age, caretaker_id) VALUES (?,?,?,?)', [name, type, age, caretaker_id], function(err, rows, fields) {
+      connection.query('INSERT INTO animals (name, type, age, caretaker_id) VALUES (?,?,?,?)', [result.name, result.type, result.age, caretaker_id], function(err, rows, fields) {
         if (err) throw err;
         console.log('Finished adding the animal');
       });
@@ -56,7 +48,6 @@ var zoo = function() {
     });
   }
   //???? should the visit function have the argument inputScope?
-  //???? should there be a prompt.get function
   this.visit = function() {
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
     console.log("Enter (N): do you know the animal by it's name? We will visit that animal!");
@@ -72,8 +63,6 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Please choose what you would like to visit!");
     prompt.get(["visit"], function (err, result) {
-    //test for input 
-    //console.log("visit: " + result.visit);
       if (result.visit == "Q"){
         currentScope.menu();
       } else if (result.visit == "O") {
@@ -97,12 +86,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter the animal type to find how many animals we have of those type.");
     prompt.get(["animal_type"], function (err, result) {
-    //test for input 
-    // console.log("animal_type: " + result.animal_type);
-      var animal_type = result.animal_type;
-      connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [animal_type], function(err, rows, fields) {
+      connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [result.animal_type], function(err, rows, fields) {
         if (err) throw err;
-          console.log(rows);                    //??still need to drill into rows
+          console.log(rows);                    //** still need to drill into rows
       });
     currentScope.menu();
     currentScope.promptUser();
@@ -112,12 +98,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter city name NY/SF.");
     prompt.get(["city_name"], function (err, result) {
-    //test for input 
-    // console.log("city_name: " + result.city_name);
-      var city_name = result.city_name;
-      connection.query('SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [city_name], function(err, rows, fields) {
+      connection.query('SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [result.city_name], function(err, rows, fields) {
         if (err) throw err;
-        console.log('The number of animals is : ' + rows);  //?? still need to drill into the object
+        console.log('The number of animals in that city is : ' + rows);  //** still need to drill into the object
       });
     currentScope.visit();
     currentScope.view(currentScope);
@@ -127,10 +110,7 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter the ID of the animal you want to visit.");
     prompt.get(["animal_id"], function (err, result) {
-    //test for input 
-    // console.log("animal_id: " + result.animal_id);
-      var animal_id = result.animal_id;
-      connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = ?', [animal_id], function(err, rows, fields) {
+      connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = ?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
           for (i=0; i <rows.length;i++){
             console.log('The city is: ' + rows[i].city);
@@ -144,10 +124,7 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter the name of the animal you want to visit.");
     prompt.get(["animal_name"], function (err, result) {
-    //test for input 
-    // console.log("animalName: " + result.animal_name);
-    var animal_name = result.animal_name;
-    connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [animal_name], function(err, rows, fields) {
+    connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [result.animal_name], function(err, rows, fields) {
       if (err) throw err;
         for (i=0; i <rows.length;i++){
           console.log('The city is: ' + rows[i].city);
@@ -161,11 +138,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter to find how many animals we have to visit.");
     prompt.get(["animal_all"], function (err, result) {
-    //test for input 
-    // console.log("animal_all: " + result.animal_all);
     connection.query('SELECT COUNT(id) FROM animals', function(err, rows, fields){
       if (err) throw err;
-      console.log('The number of animals at the zoo is :' + rows);   //?? still need to drill into the object
+      console.log('The number of animals at the zoo is :' + rows);   //** still need to drill into the object
     });    
     currentScope.menu();
     currentScope.promptUser();
@@ -175,18 +150,7 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter to update an animal.");
     prompt.get(["id","new_name","new_age","new_type","new_caretaker_id"], function (err, result) {
-    //test for input 
-    // console.log("animal id: " + result.id);
-    // console.log("new_name: " + result.new_name);
-    // console.log("new_age: " + result.new_age);
-    // console.log("new_type: " + result.new_type);
-    // console.log("new_caretaker: " + result.new_caretaker);
-      var var new_id = result.id;
-      var new_name = result.name;
-      var new_age = result.new_age;
-      var new_type = result.type;
-      var new_caretaker = new_caretaker;
-      connection.query('UPDATE animals SET name=?, age=?, type=?, caretaker_id=? WHERE id=40', [new_name, new_age, new_type, new_caretaker], function(err, rows, fields) {
+      connection.query('UPDATE animals SET name=?, age=?, type=?, caretaker_id=? WHERE id=?', [result.new_name, result.new_age, result.new_type, result.new_caretaker_id, result.id], function(err, rows, fields) {
         if (err) throw err;
           console.log("The animal is updated");
       });
@@ -198,13 +162,10 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter the ID of the animal you want to adopt.");
     prompt.get(["animal_id"], function (err, result) {
-    //test for input 
-    //console.log("animal_id: " + result.animal_id);
-      var animal_id = result.animal_id;
-      connection.query('DELETE FROM animals WHERE id =?', [animal_id], function(err, rows, fields) {
+      connection.query('DELETE FROM animals WHERE id =?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
           
-          console.log("The animal is adopted");
+          console.log("You adopted the animal");
       });
     currentScope.visit();
     currentScope.view(currentScope);
@@ -213,8 +174,6 @@ var zoo = function() {
   this.promptUser = function() {
     var self = this;
     prompt.get(["input"], function (err, result) {
-    //test for input 
-    // console.log("input: " + result.input);
       if (result.input == "Q") {
         self.exit();
       } else if (result.input == "A") {
@@ -240,12 +199,22 @@ var zoo = function() {
   }
 }
 
-//zoo.open()
 
 //these are used to check the functions in zoo
 var zoo1 = new zoo();
-zoo1.welcome();
-zoo1.menu();
+//zoo1.welcome();
+//zoo1.menu();
 //zoo1.add();
 //zoo1.visit();
-zoo1.view();
+//zoo1.view();
+//zoo1.type();
+//zoo1.care();
+//zoo1.animId();
+//zoo1.name();
+//zoo1.all();
+//zoo1.update();
+//zoo1.adopt();
+//zoo1.promptUser()
+//zoo1.exit();
+//zoo1.open();
+
