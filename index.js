@@ -153,7 +153,7 @@ var zoo = function() {
     prompt.get(["id","new_name","new_age","new_type","new_caretaker_id"], function (err, result) {
       connection.query('UPDATE animals SET name=?, age=?, type=?, caretaker_id=? WHERE id=?', [result.new_name, result.new_age, result.new_type, result.new_caretaker_id, result.id], function(err, rows, fields) {
         if (err) throw err;
-          console.log("The animal is updated");
+          console.log("You updated the animal with id: " + result.id);
       });
     currentScope.menu();
     currentScope.promptUser();
@@ -165,7 +165,7 @@ var zoo = function() {
     prompt.get(["animal_id"], function (err, result) {
       connection.query('DELETE FROM animals WHERE id =?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
-          console.log("You adopted the animal");
+          console.log("You adopted the animal with id: " + result.animal_id);
       });
     // currentScope.visit();
     // currentScope.view(currentScope);
