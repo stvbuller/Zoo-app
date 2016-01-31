@@ -9,12 +9,12 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-        if (err) {
-            console.error('error connecting: ' + err.stack);
-            return;
-        };
-        //console.log('connected as id ' + connection.threadId);
-    });
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    };
+    //console.log('connected as id ' + connection.threadId);
+});
 
 prompt.start();
 prompt.message = "";
@@ -43,7 +43,14 @@ var zoo = function() {
     // console.log("type: " + result.type);
     // console.log("age: " + result.age);
     //query adds an animal to the database
-    connection.query();
+      var name = result,name;
+      var type = result.type;
+      var age = result.age;
+      var caretaker_id = 1;
+      connection.query('INSERT INTO animals (name, type, age, caretaker_id) VALUES (?,?,?,?)', [name, type, age, caretaker_id], function(err, rows, fields) {
+        if (err) throw err;
+        console.log('Finished adding the animal');
+      });
     currentScope.menu();
     currentScope.promptUser();
     });
@@ -92,8 +99,11 @@ var zoo = function() {
     prompt.get(["animal_type"], function (err, result) {
     //test for input 
     // console.log("animal_type: " + result.animal_type);
-    //SELECT COUNT(id) FROM animals WHERE type = animal_type
-    connection.query('SELECT COUNT(id) FROM animals WHERE type =' animal_type);
+      var animal_type = result.animal_type;
+      connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [animal_type], function(err, rows, fields) {
+        if (err) throw err;
+          console.log(rows);                    //??still need to drill into rows
+      });
     currentScope.menu();
     currentScope.promptUser();
     });
@@ -104,8 +114,11 @@ var zoo = function() {
     prompt.get(["city_name"], function (err, result) {
     //test for input 
     // console.log("city_name: " + result.city_name);
-    //SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = city_name
-    connection.query();
+      var city_name = result.city_name;
+      connection.query('SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [city_name], function(err, rows, fields) {
+        if (err) throw err;
+        console.log('The number of animals is : ' + rows);  //?? still need to drill into the object
+      });
     currentScope.visit();
     currentScope.view(currentScope);
     });
@@ -116,8 +129,13 @@ var zoo = function() {
     prompt.get(["animal_id"], function (err, result) {
     //test for input 
     // console.log("animal_id: " + result.animal_id);
-    //SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = animal_id
-    connection.query();
+      var animal_id = result.animal_id;
+      connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = ?', [animal_id], function(err, rows, fields) {
+        if (err) throw err;
+          for (i=0; i <rows.length;i++){
+            console.log('The city is: ' + rows[i].city);
+          }  
+      });
     currentScope.visit();
     currentScope.view(currentScope);
     });
@@ -127,9 +145,14 @@ var zoo = function() {
     console.log("Enter the name of the animal you want to visit.");
     prompt.get(["animal_name"], function (err, result) {
     //test for input 
-    // console.log("animalName: " + result.animalName);
-    //SELECT * FROM animals WHERE name = animal_name
-    connection.query('SELECT * FROM animals WHERE name =' animal_name);
+    // console.log("animalName: " + result.animal_name);
+    var animal_name = result.animal_name;
+    connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [animal_name], function(err, rows, fields) {
+      if (err) throw err;
+        for (i=0; i <rows.length;i++){
+          console.log('The city is: ' + rows[i].city);
+        }  
+    });
     currentScope.visit();
     currentScope.view(currrentScope);
     });
@@ -140,8 +163,10 @@ var zoo = function() {
     prompt.get(["animal_all"], function (err, result) {
     //test for input 
     // console.log("animal_all: " + result.animal_all);
-    //SELECT COUNT(id) FROM animals;
-    connection.query('SELECT COUNT(id) FROM animals');
+    connection.query('SELECT COUNT(id) FROM animals', function(err, rows, fields){
+      if (err) throw err;
+      console.log('The number of animals at the zoo is :' + rows);   //?? still need to drill into the object
+    });    
     currentScope.menu();
     currentScope.promptUser();
     });
@@ -156,8 +181,15 @@ var zoo = function() {
     // console.log("new_age: " + result.new_age);
     // console.log("new_type: " + result.new_type);
     // console.log("new_caretaker: " + result.new_caretaker);
-    //UPDATE animals SET name=new_name, age=new_age, type=new_type, caretaker_id=new_caretaker_id WHERE id=id
-    connection.query('UPDATE animals SET name='new_name, 'age='new_age, 'type='new_type, 'caretaker_id='new_caretaker_id 'WHERE id'=id);
+      var var new_id = result.id;
+      var new_name = result.name;
+      var new_age = result.new_age;
+      var new_type = result.type;
+      var new_caretaker = new_caretaker;
+      connection.query('UPDATE animals SET name=?, age=?, type=?, caretaker_id=? WHERE id=40', [new_name, new_age, new_type, new_caretaker], function(err, rows, fields) {
+        if (err) throw err;
+          console.log("The animal is updated");
+      });
     currentScope.menu();
     currentScope.promptUser();
     });
@@ -168,8 +200,12 @@ var zoo = function() {
     prompt.get(["animal_id"], function (err, result) {
     //test for input 
     //console.log("animal_id: " + result.animal_id);
-    //DELETE FROM animals WHERE id = animal_id
-    connection.query('DELETE FROM animals WHERE id =' animal_id);
+      var animal_id = result.animal_id;
+      connection.query('DELETE FROM animals WHERE id =?', [animal_id], function(err, rows, fields) {
+        if (err) throw err;
+          
+          console.log("The animal is adopted");
+      });
     currentScope.visit();
     currentScope.view(currentScope);
     });
