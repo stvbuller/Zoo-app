@@ -48,33 +48,34 @@ var zoo = function() {
     });
   }
   //???? should the visit function have the argument inputScope?
-  this.visit = function() {
+  this.visit = function(inputScope) {
+    var currentScope = inputScope;
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
     console.log("Enter (N): do you know the animal by it's name? We will visit that animal!");
     console.log("Enter (A): here's the count for all animals in all locations!");
     console.log("Enter (C): here's the count for all animals in this one city!");
     console.log("Enter (O): here's the count for all the animals in all locations by the type you specified!");
     console.log("Enter (Q): Quits to the main menu!");
-    currentScope.visit();
+    //currentScope.visit();
     currentScope.view(currentScope);
   }
-  //???? should the view function have the argument inputScope?
   this.view = function(inputScope){
     var currentScope = inputScope;
-    console.log("Please choose what you would like to visit!");
+    console.log("Please choose what you would like to do!");
     prompt.get(["visit"], function (err, result) {
       if (result.visit == "Q"){
         currentScope.menu();
+        currentScope.promptUser();
       } else if (result.visit == "O") {
-        currentScope.type(input_scope);
+        currentScope.type(currentScope);
       } else if (result.visit == "I") {
-        currentScope.animId(input_scope);       //?? .type or .animId
+        currentScope.animId(currentScope);       
       } else if (result.visit == "N") {
-        currentScope.name(input_scope);          
+        currentScope.name(currentScope);          
       } else if (result.visit == "A"){
-        currentScope.all(input_scope);
+        currentScope.all(currentScope);
       } else if (result.visit == "C") {
-        currentScope.care(input_scope);
+        currentScope.care(currentScope);
       } else {
         console.log("Sorry didn't get that, come again?");
         currentScope.visit();
@@ -102,8 +103,8 @@ var zoo = function() {
         if (err) throw err;
         console.log('The number of animals in that city is : ' + rows);  //** still need to drill into the object
       });
-    currentScope.visit();
-    currentScope.view(currentScope);
+    currentScope.visit(currentScope);
+    //currentScope.view(currentScope);
     });
   }
   this.animId = function(inputScope) {
@@ -113,11 +114,11 @@ var zoo = function() {
       connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = ?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
           for (i=0; i <rows.length;i++){
-            console.log('The city is: ' + rows[i].city);
+            console.log('The city id ' + result.animal_id +  ' is in is: ' + rows[i].city);
           }  
       });
-    currentScope.visit();
-    currentScope.view(currentScope);
+    currentScope.visit(currentScope);
+    //currentScope.view(currentScope);
     });
   }  
   this.name = function(inputScope) {
@@ -127,16 +128,16 @@ var zoo = function() {
     connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [result.animal_name], function(err, rows, fields) {
       if (err) throw err;
         for (i=0; i <rows.length;i++){
-          console.log('The city is: ' + rows[i].city);
+          console.log('The city ' + result.animal_name + ' is in is : ' + rows[i].city);
         }  
     });
-    currentScope.visit();
-    currentScope.view(currrentScope);
+    currentScope.visit(currentScope);
+    //currentScope.view(currrentScope);
     });
   }
   this.all = function(inputScope) {
     var currentScope = inputScope;
-    console.log("Enter to find how many animals we have to visit.");
+    console.log("Press Enter to find how many animals we have to visit.");
     prompt.get(["animal_all"], function (err, result) {
     connection.query('SELECT COUNT(id) FROM animals', function(err, rows, fields){
       if (err) throw err;
@@ -158,17 +159,18 @@ var zoo = function() {
     currentScope.promptUser();
     });
   }
-  this.adopt = function(inputScope){
+  this.adopt = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter the ID of the animal you want to adopt.");
     prompt.get(["animal_id"], function (err, result) {
       connection.query('DELETE FROM animals WHERE id =?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
-          
           console.log("You adopted the animal");
       });
-    currentScope.visit();
-    currentScope.view(currentScope);
+    // currentScope.visit();
+    // currentScope.view(currentScope);
+    currentScope.menu();
+    currentScope.promptUser();
     });
   }
   this.promptUser = function() {
@@ -178,9 +180,11 @@ var zoo = function() {
         self.exit();
       } else if (result.input == "A") {
         self.add(self);
+      } else if (result.input == "U"){
+        self.update(self);  
       } else if (result.input == "V") {
-        self.visit();
-        self.view(self);
+        self.visit(self);
+        //self.view(self);
       } else if (result.input == "D") {
         self.adopt(self);
       } else {
@@ -200,8 +204,8 @@ var zoo = function() {
 }
 
 
-//these are used to check the functions in zoo
 var zoo1 = new zoo();
+//these are used to check the functions in zoo
 //zoo1.welcome();
 //zoo1.menu();
 //zoo1.add();
@@ -216,5 +220,5 @@ var zoo1 = new zoo();
 //zoo1.adopt();
 //zoo1.promptUser()
 //zoo1.exit();
-//zoo1.open();
+zoo1.open();
 
