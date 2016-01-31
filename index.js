@@ -47,7 +47,6 @@ var zoo = function() {
     currentScope.promptUser();
     });
   }
-  //???? should the visit function have the argument inputScope?
   this.visit = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
@@ -78,8 +77,8 @@ var zoo = function() {
         currentScope.care(currentScope);
       } else {
         console.log("Sorry didn't get that, come again?");
-        currentScope.visit();
-        currentScope.view(currentScope);
+        currentScope.visit(currentScope);
+        //currentScope.view(currentScope);
       }
     });  
   }
@@ -87,9 +86,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter the animal type to find how many animals we have of those type.");
     prompt.get(["animal_type"], function (err, result) {
-      connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [result.animal_type], function(err, rows, fields) {
+      connection.query('SELECT COUNT(id) AS animal_count FROM animals WHERE type =?', [result.animal_type], function(err, rows, fields) {
         if (err) throw err;
-          console.log(rows);                    //** still need to drill into rows
+          console.log("The number of " + result.animal_type + " is: " + rows[0].animal_count);                    //** still need to drill into rows
       });
     currentScope.menu();
     currentScope.promptUser();
@@ -99,9 +98,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Enter city name NY/SF.");
     prompt.get(["city_name"], function (err, result) {
-      connection.query('SELECT COUNT(type) FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [result.city_name], function(err, rows, fields) {
+      connection.query('SELECT COUNT(type) AS animal_count FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE city = ?', [result.city_name], function(err, rows, fields) {
         if (err) throw err;
-        console.log('The number of animals in that city is : ' + rows);  //** still need to drill into the object
+        console.log("The number of animals in " + result.city_name + " is: " + rows[0].animal_count);  //** still need to drill into the object
       });
     currentScope.visit(currentScope);
     //currentScope.view(currentScope);
@@ -139,9 +138,9 @@ var zoo = function() {
     var currentScope = inputScope;
     console.log("Press Enter to find how many animals we have to visit.");
     prompt.get(["animal_all"], function (err, result) {
-    connection.query('SELECT COUNT(id) FROM animals', function(err, rows, fields){
+    connection.query('SELECT COUNT(id) AS animal_count FROM animals', function(err, rows, fields){
       if (err) throw err;
-      console.log('The number of animals at the zoo is :' + rows);   //** still need to drill into the object
+      console.log('The number of animals at the zoo is: ' + rows[0].animal_count);   //** still need to drill into the object
     });    
     currentScope.menu();
     currentScope.promptUser();
@@ -167,7 +166,7 @@ var zoo = function() {
         if (err) throw err;
           console.log("You adopted the animal with id: " + result.animal_id);
       });
-    // currentScope.visit();
+    //currentScope.visit(currentScope);
     // currentScope.view(currentScope);
     currentScope.menu();
     currentScope.promptUser();
@@ -189,6 +188,7 @@ var zoo = function() {
         self.adopt(self);
       } else {
         console.log("Sorry didn't get that, come again?");
+        self.promptUser();
       }
     });
   }  

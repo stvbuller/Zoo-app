@@ -50,12 +50,12 @@ connection.connect();
 
 
 //counts the number of a type of animal
-var animal_type = "snake";
-connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [animal_type], function(err, rows, fields) {
-  if (err) throw err;
-    console.log(rows);  //?? still need to drill into rows
-    console.log(rows)
-});
+// var animal_type = "snake";
+// connection.query('SELECT COUNT(id) AS animals_count FROM animals WHERE type =?', [animal_type], function(err, rows, fields) {
+//   if (err) throw err;
+//     console.log(rows);  //?? still need to drill into rows
+//     console.log(rows[0].animals_count);
+// });
 
 //counts total number of animals
 // connection.query('SELECT COUNT(id) FROM animals', function(err, rows, fields){
@@ -64,14 +64,14 @@ connection.query('SELECT COUNT(id) FROM animals WHERE type =?', [animal_type], f
 // });
 
 //returns the location of a animal specified by name
-var animal_name = "Tinfancier Collarmon";
-connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [animal_name], function(err, rows, fields) {
-  if (err) throw err;
-    console.log(rows);
-    for (i=0; i <rows.length;i++){
-      console.log('The city is: ' + rows[i].city);
-    }  
-});
+// var animal_name = "Tinfancier Collarmon";
+// connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [animal_name], function(err, rows, fields) {
+//   if (err) throw err;
+//     console.log(rows);
+//     for (i=0; i <rows.length;i++){
+//       console.log('The city is: ' + rows[i].city);
+//     }  
+// });
 
 //counts the number of animals in a city
 // var city_name = "NY";
