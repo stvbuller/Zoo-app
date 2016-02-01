@@ -12,7 +12,7 @@ connection.connect(function(err) {
     if (err) {
         console.error('error connecting: ' + err.stack);
         return;
-    };
+    }
     //console.log('connected as id ' + connection.threadId);
 });
 
@@ -22,7 +22,7 @@ prompt.message = "";
 var zoo = function() {
   this.welcome = function() {
     console.log("Welcome to the Zoo And Friends App!");
-  }
+  };
   this.menu = function() {
     console.log("Enter (A): to Add a new animal to the Zoo!");
     console.log();
@@ -33,7 +33,7 @@ var zoo = function() {
     console.log("Enter (D): to Adopt an animal from the Zoo!");
     console.log();
     console.log("Enter (Q): to Quit and exit the Zoo!");
-  }
+  };
   this.add = function(inputScope) {
     var currentScope = inputScope;
     console.log("To add an animal to the zoo please fill out the following form for us!");
@@ -46,7 +46,7 @@ var zoo = function() {
     currentScope.menu();
     currentScope.promptUser();
     });
-  }
+  };
   this.visit = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter (I): do you know the animal by it's id? We will visit that animal!");
@@ -57,7 +57,7 @@ var zoo = function() {
     console.log("Enter (Q): Quits to the main menu!");
     //currentScope.visit();
     currentScope.view(currentScope);
-  }
+  };
   this.view = function(inputScope){
     var currentScope = inputScope;
     console.log("Please choose what you would like to do!");
@@ -68,9 +68,9 @@ var zoo = function() {
       } else if (result.visit == "O") {
         currentScope.type(currentScope);
       } else if (result.visit == "I") {
-        currentScope.animId(currentScope);       
+        currentScope.animId(currentScope);
       } else if (result.visit == "N") {
-        currentScope.name(currentScope);          
+        currentScope.name(currentScope);
       } else if (result.visit == "A"){
         currentScope.all(currentScope);
       } else if (result.visit == "C") {
@@ -80,8 +80,8 @@ var zoo = function() {
         currentScope.visit(currentScope);
         //currentScope.view(currentScope);
       }
-    });  
-  }
+    });
+  };
   this.type = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter the animal type to find how many animals we have of those type.");
@@ -93,7 +93,7 @@ var zoo = function() {
     currentScope.menu();
     currentScope.promptUser();
     });
-  }  
+  };
   this.care = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter city name NY/SF.");
@@ -105,35 +105,35 @@ var zoo = function() {
     currentScope.visit(currentScope);
     //currentScope.view(currentScope);
     });
-  }
+  };
   this.animId = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter the ID of the animal you want to visit.");
     prompt.get(["animal_id"], function (err, result) {
       connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.id = ?', [result.animal_id], function(err, rows, fields) {
         if (err) throw err;
-          for (i=0; i <rows.length;i++){
+          for (var i=0; i <rows.length;i++){
             console.log('The city id ' + result.animal_id +  ' is in is: ' + rows[i].city);
-          }  
+          }
       });
     currentScope.visit(currentScope);
     //currentScope.view(currentScope);
     });
-  }  
+  };
   this.name = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter the name of the animal you want to visit.");
     prompt.get(["animal_name"], function (err, result) {
     connection.query('SELECT city FROM animals LEFT JOIN caretakers ON caretaker_id=caretakers.id WHERE animals.name = ?', [result.animal_name], function(err, rows, fields) {
       if (err) throw err;
-        for (i=0; i <rows.length;i++){
+        for (var i=0; i <rows.length;i++){
           console.log('The city ' + result.animal_name + ' is in is : ' + rows[i].city);
-        }  
+        }
     });
     currentScope.visit(currentScope);
     //currentScope.view(currrentScope);
     });
-  }
+  };
   this.all = function(inputScope) {
     var currentScope = inputScope;
     console.log("Press Enter to find how many animals we have to visit.");
@@ -141,11 +141,11 @@ var zoo = function() {
     connection.query('SELECT COUNT(id) AS animal_count FROM animals', function(err, rows, fields){
       if (err) throw err;
       console.log('The number of animals at the zoo is: ' + rows[0].animal_count);   //** still need to drill into the object
-    });    
+    });
     currentScope.menu();
     currentScope.promptUser();
     });
-  }
+  };
   this.update = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter to update an animal.");
@@ -157,7 +157,7 @@ var zoo = function() {
     currentScope.menu();
     currentScope.promptUser();
     });
-  }
+  };
   this.adopt = function(inputScope) {
     var currentScope = inputScope;
     console.log("Enter the ID of the animal you want to adopt.");
@@ -171,7 +171,7 @@ var zoo = function() {
     currentScope.menu();
     currentScope.promptUser();
     });
-  }
+  };
   this.promptUser = function() {
     var self = this;
     prompt.get(["input"], function (err, result) {
@@ -180,7 +180,7 @@ var zoo = function() {
       } else if (result.input == "A") {
         self.add(self);
       } else if (result.input == "U"){
-        self.update(self);  
+        self.update(self);
       } else if (result.input == "V") {
         self.visit(self);
         //self.view(self);
@@ -191,16 +191,16 @@ var zoo = function() {
         self.promptUser();
       }
     });
-  }  
+  };
   this.exit = function() {
     console.log("Thank you for visiting us, good bye!");
     process.exit();
-  }
+  };
   this.open = function() {
     this.welcome();
     this.menu();
     this.promptUser();
-  }
+  };
 }
 
 
